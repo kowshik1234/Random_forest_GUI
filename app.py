@@ -9,11 +9,16 @@
 # UI Framework: Streamlit
 # ============================================================
 
+import os
 import streamlit as st
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
+
+# --- Get the folder where this script lives ---
+# This ensures the CSV is found no matter where you run the command from
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # ============================================================
 # PAGE CONFIGURATION
@@ -34,8 +39,9 @@ st.set_page_config(
 @st.cache_resource
 def load_data_and_train_model():
 
-    # --- Load the dataset from the same folder ---
-    df = pd.read_csv("UCI_Credit_Card.csv")
+    # --- Load the dataset from the same folder as this script ---
+    csv_path = os.path.join(SCRIPT_DIR, "UCI_Credit_Card.csv")
+    df = pd.read_csv(csv_path)
 
     # --- Drop the ID column (just a row number, not useful) ---
     df = df.drop("ID", axis=1)
